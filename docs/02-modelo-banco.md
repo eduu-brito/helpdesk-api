@@ -28,11 +28,11 @@ Descrever a estrutura do banco de dados utilizada pela aplicação, incluindo ta
 | titulo | VARCHAR | Título do chamado |
 | descricao | TEXT | Descrição do problema |
 | prioridade | ENUM | Baixa, Média, Alta ou Crítica |
-| status | ENUM | Status atual |
+| status | ENUM | Status atual (inicia como aberto) |
 | data_criacao | DATETIME | Data de abertura |
-| data_fechamento | DATETIME | Data de encerramento |
+| data_fechamento | DATETIME | Data de encerramento (opcional) |
 | id_usuario | FK | Usuário que abriu o chamado |
-| id_tecnico | FK | Técnico responsável |
+| id_tecnico | FK | Técnico responsável (opcional) |
 | id_categoria | FK | Categoria do chamado |
 
 ---
