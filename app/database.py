@@ -13,28 +13,18 @@ password = os.getenv("DB_PASSWORD")
 
 DATABASE_URL = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
 
-print(f"Usuário: '{user}'")
-print(f"Host: '{host}'")
-print(f"Porta: '{port}'")
-print(f"Banco: '{database}'")
-
-
-
-
 
 engine = create_engine(DATABASE_URL)
  
-SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+SessionLocal = sessionmaker(
+    bind=engine,
+    autocommit=False,
+    autoflush=False
+)
 
 def get_db():
-    db = SessionLocal ()
+    db = SessionLocal
     try:
         yield db
     finally:
-        db.close()
-        
-try:
-    with engine.connect() as connection:
-        print("✅ Conexão com o banco realizada com sucesso!")
-except Exception as e:
-    print(f"❌ Erro ao conectar: {e}")
+        db.close
