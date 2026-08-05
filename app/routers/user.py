@@ -3,10 +3,17 @@ from app.schemas.user import UserCreate, UserResponse
 from app.database import get_db
 from app.models.user import User
 from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 router = APIRouter()
 
-@router.post("/usuarios", response_model=UserResponse)
+@router.get("/usuarios", response_model=list[UserResponse])
+def listar_usuarios(db=Depends(get_db)):
+    usuarios=db.query(User).all()
+    return usuarios
+
+
+@router.post("/usuarios", response_model=UserResponse)    
 def criar_usuario(user: UserCreate, db = Depends (get_db)):
     senha_hash = bcrypt.hashpw(user.senha.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
     novo_usuario = User(
@@ -19,3 +26,17 @@ def criar_usuario(user: UserCreate, db = Depends (get_db)):
     db.commit()
     db.refresh(novo_usuario)
     return novo_usuario
+
+
+@router.get("/usuarios/{id}", response_model=UserResponse)
+def buscar_usuario(id: int, db=Depends(get_db)):
+    usuario = db.query(User).filter(User.id == id).first()
+    if usuario == None:
+        raise HTTPException(
+            status_code=404,
+            detail= "Usuário não encontrado"
+        )
+    else:
+        return usuario
+        
+
