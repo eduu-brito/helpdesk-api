@@ -58,4 +58,27 @@ def atualizar_usuario(id:int,user: UserCreate, db=Depends(get_db)):
 
     return usuario
 
+@router.delete ("/usuarios/{id}")
+def deletar_usuario(id: int, db=Depends(get_db)):
+     usuario = db.query (User).filter(User.id == id).first()
+     if usuario == None:
+        raise HTTPException(
+            status_code=404,
+            detail="Usuario não encontrado"
+        )
+     db.delete(usuario)
+     db.commit()
+     return {"message": "Usuário deletado com sucesso"}
+     
+
+@router.get("/usuarios/email/{email}",response_model=UserResponse)
+def buscar_usuario_email (email: str, db=Depends(get_db)):
+    usuario = db.query (User).filter(User.email == email).first()
+    if usuario == None:
+        raise HTTPException(
+            status_code=404,
+            detail="Email não encontrado"
+        )
+    return usuario
+
 
