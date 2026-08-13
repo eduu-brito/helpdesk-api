@@ -2,13 +2,15 @@ import bcrypt
 from app.schemas.user import UserCreate, UserResponse
 from app.database import get_db
 from app.models.user import User
-from fastapi import APIRouter, Depends
 from fastapi import APIRouter, Depends, HTTPException
-
+from app.security import verificar_token
 router = APIRouter()
 
 @router.get("/usuarios", response_model=list[UserResponse])
-def listar_usuarios(db=Depends(get_db)):
+def listar_usuarios(
+    db=Depends(get_db),
+    usuario_token=Depends(verificar_token)
+):
     usuarios=db.query(User).all()
     return usuarios
 

@@ -4,6 +4,7 @@ from app.database import get_db
 from app.models.user import User
 from dotenv import load_dotenv
 from datetime import datetime, timedelta,timezone
+from app.core.config import SECRET_KEY, ALGORITHM
 import bcrypt
 import jwt
 import os
@@ -30,7 +31,7 @@ def login(user:UserLogin, db=Depends(get_db)):
             detail="Credenciais inválidas")
     expires = datetime.now(timezone.utc) + timedelta(minutes=30)
     payload = {
-    "sub": usuario.id,
+    "sub": str(usuario.id),
     "tipo": usuario.tipo,
     "exp": expires
 
