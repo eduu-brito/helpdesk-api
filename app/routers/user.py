@@ -58,7 +58,7 @@ def atualizar_usuario(id:int,user: UserCreate, db=Depends(get_db),_admin=Depends
     usuario.nome = user.nome
     usuario.email = user.email
     usuario.tipo = user.tipo
-    
+
     senha_hash = bcrypt.hashpw(user.senha.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
     usuario.senha = senha_hash
     db.commit ()
@@ -67,7 +67,7 @@ def atualizar_usuario(id:int,user: UserCreate, db=Depends(get_db),_admin=Depends
     return usuario
 
 @router.delete ("/usuarios/{id}")
-def deletar_usuario(id: int, db=Depends(get_db)):
+def deletar_usuario(id: int, db=Depends(get_db), _admin=Depends(verificar_admin)):
      usuario = db.query (User).filter(User.id == id).first()
      if usuario == None:
         raise HTTPException(
