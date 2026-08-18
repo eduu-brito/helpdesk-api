@@ -47,9 +47,9 @@ def buscar_usuario(id: int, db=Depends(get_db)):
         return usuario
 
 @router.put("/usuarios/{id}", response_model=UserResponse)
-def atualizar_usuario(id:int,user: UserCreate, db=Depends(get_db)):
+def atualizar_usuario(id:int,user: UserCreate, db=Depends(get_db),_admin=Depends(verificar_admin)):
     usuario = db.query(User).filter(User.id == id).first()
-    if usuario == None:
+    if usuario is None:
             raise HTTPException(
                 status_code=404,
                 detail= "Usuario não encontrado."
@@ -58,6 +58,7 @@ def atualizar_usuario(id:int,user: UserCreate, db=Depends(get_db)):
     usuario.nome = user.nome
     usuario.email = user.email
     usuario.tipo = user.tipo
+    
     senha_hash = bcrypt.hashpw(user.senha.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
     usuario.senha = senha_hash
     db.commit ()
