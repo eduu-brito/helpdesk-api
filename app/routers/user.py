@@ -4,6 +4,8 @@ from app.database import get_db
 from app.models.user import User
 from fastapi import APIRouter, Depends, HTTPException
 from app.security import verificar_token
+
+
 router = APIRouter()
 
 @router.get("/usuarios", response_model=list[UserResponse])
