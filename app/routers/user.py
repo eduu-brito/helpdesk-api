@@ -3,7 +3,7 @@ from app.schemas.user import UserCreate, UserResponse
 from app.database import get_db
 from app.models.user import User
 from fastapi import APIRouter, Depends, HTTPException
-from app.security import verificar_token
+from app.security import verificar_token, verificar_admin
 
 
 router = APIRouter()
@@ -18,7 +18,10 @@ def listar_usuarios(
 
 
 @router.post("/usuarios", response_model=UserResponse)    
-def criar_usuario(user: UserCreate, db = Depends (get_db)):
+def criar_usuario(
+    user: UserCreate,
+    db = Depends (get_db),
+    _admin=Depends(verificar_admin)):
     senha_hash = bcrypt.hashpw(user.senha.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
     novo_usuario = User(
     nome=user.nome,
