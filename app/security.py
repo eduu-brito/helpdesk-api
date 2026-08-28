@@ -22,4 +22,13 @@ def verificar_admin (usuario_token=Depends(verificar_token)):
 
     return usuario_token
 
+def verificar_tecnico(usuario_token=Depends(verificar_token)):
+    if usuario_token["tipo"] != "tecnico":
+        raise HTTPException(
+            status_code=403,
+            detail="Acesso permitido somente para técnicos"
+        )
+
+    return usuario_token
+
 

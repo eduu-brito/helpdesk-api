@@ -4,8 +4,9 @@ from app.database import get_db
 from app.models.user import User
 from fastapi import APIRouter, Depends, HTTPException
 from app.security import verificar_token, verificar_admin
-
-
+from app.models.chamado import Chamado
+from app.schemas.chamado import ChamadoCreate, ChamadoResponse
+from datetime import datetime, timezone
 router = APIRouter()
 
 @router.get("/usuarios", response_model=list[UserResponse])
@@ -89,4 +90,25 @@ def buscar_usuario_email (email: str, db=Depends(get_db)):
         )
     return usuario
 
+@router.post("/chamados", response_model=ChamadoResponse)
+def criar_chamado(
+    chamado: ChamadoCreate,
+    db=Depends(get_db),
+    usuario_token=Depends(verificar_token)
+):
+    novo_chamado = Chamado(
+        titulo=chamado.titulo,
+        descricao=chamado.descricao,
+        prioridade=chamado.prioridade,
+        status="aberto",
+        data_criacao=datetime.now(timezone.utc),
+        id_usuario=int(usuario_token["sub"]),
+        id_categoria=chamado.id_categoria
+    )
+
+    db.add(novo_chamado)
+    db.commit()
+    db.refresh(novo_chamado)
+
+    return novo_chamado
 

@@ -10,7 +10,7 @@ class Chamado (Base):
     titulo = Column(String(100), nullable=False)
     descricao = Column (String(255), nullable=False)
     prioridade = Column (String(10), nullable=False)
-    status = Column(String (10), nullable=False)
+    status = Column(String (20), nullable=False)
     data_criacao = Column(DateTime, nullable=False)
     data_fechamento = Column(DateTime)
 
