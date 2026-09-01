@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import os
 from app.models.base import Base
-from app.models import User, Chamado, Categoria
+from app.models import User, Chamado, Categoria, Comentario
 from dotenv import load_dotenv
 
 load_dotenv()

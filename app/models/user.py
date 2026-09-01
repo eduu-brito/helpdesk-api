@@ -21,3 +21,8 @@ class User(Base):
         foreign_keys="Chamado.id_tecnico",
         back_populates="tecnico"
     )
+    
+    comentarios = relationship(
+        "Comentario",
+        back_populates="usuario"
+    )

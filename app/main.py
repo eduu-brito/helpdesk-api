@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from app.routers.user import router as user_router
 from app.routers.auth import router as auth_router
 from app.routers.chamados import router as chamado_router
+from app.routers.comentarios import router as comentario_router
 
 app = FastAPI(
     title="HelpDesk API",
@@ -9,11 +10,13 @@ app = FastAPI(
     version="1.0.0"
 )
 
-app.include_router (chamado_router)
+
 
 @app.get("/")
 def root():
     return {"message": "Bem-vindo ao HelpDesk API!"}
 
+app.include_router (chamado_router)
 app.include_router(user_router)
 app.include_router(auth_router)
+app.include_router(comentario_router)

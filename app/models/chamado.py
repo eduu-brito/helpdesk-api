@@ -49,4 +49,9 @@ class Chamado (Base):
         back_populates="chamados"
     )
 
+    comentarios = relationship(
+        "Comentario",
+        back_populates="chamado"
+    )
+
 
